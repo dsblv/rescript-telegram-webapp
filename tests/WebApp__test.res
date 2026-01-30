@@ -85,8 +85,8 @@ if telegramWebApp.backButton.isVisible {
  the returned value
  */
 telegramWebApp.backButton
-->BackButton.show
-->BackButton.hide
+->BackButtonAPI.show
+->BackButtonAPI.hide
 ->ignore
 
 /**
@@ -100,7 +100,7 @@ telegramWebApp.backButton.isVisible = true
  submodule locally
  */
 {
-  open BottomButton
+  open BottomButtonAPI
 
   telegramWebApp.mainButton
   ->enable
@@ -126,7 +126,7 @@ telegramWebApp.backButton.isVisible = true
  It does require some redundant checks
  */
 telegramWebApp.deviceStorage
-->DeviceStorage.setItem("StoredKey", "StoredValue", ~callback=(error, value) => {
+->DeviceStorageAPI.setItem("StoredKey", "StoredValue", ~callback=(error, value) => {
   switch error {
   | Null =>
     switch value {
@@ -166,7 +166,7 @@ let toResult = (error: Null.t<'e>, value: option<'v>): Result.t<'v, 'e> => {
 }
 
 telegramWebApp.deviceStorage
-->DeviceStorage.setItem("StoredKey", "StoredValue", ~callback=(error, value) => {
+->DeviceStorageAPI.setItem("StoredKey", "StoredValue", ~callback=(error, value) => {
   switch toResult(error, value) {
   | Ok(true) => Console.log("Item successfuly stored")
   | Ok(false) => Console.log("Failed to store item")
