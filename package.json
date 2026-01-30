@@ -1,0 +1,30 @@
+{
+  "name": "rescript-telegram-webapp",
+  "version": "0.0.0",
+  "scripts": {
+    "res:build": "rescript",
+    "res:clean": "rescript clean",
+    "res:dev": "rescript watch",
+    "docs:generate": "rescript-tools doc src/TelegramWebApp.res | node docs-to-md.js | prettier --stdin-filepath API_REFERENCE.md > API_REFERENCE.md"
+  },
+  "keywords": [
+    "rescript",
+    "telegram",
+    "webapp",
+    "miniapp",
+    "bindings"
+  ],
+  "author": "Dmitrii Sobolev <hypercrab@vk.com>",
+  "license": "MIT",
+  "files": [
+    "rescript.json",
+    "src/TelegramWebApp.res"
+  ],
+  "devDependencies": {
+    "prettier": "3.8.1",
+    "rescript": "12.1.0"
+  },
+  "peerDependencies": {
+    "rescript": ">=12.0.0 <13"
+  }
+}
