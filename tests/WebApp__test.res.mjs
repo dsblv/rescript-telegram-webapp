@@ -15,7 +15,7 @@ if (window.Telegram.WebApp.isActve && window.Telegram.WebApp.isExpanded) {
 
 window.Telegram.WebApp.requestFullscreen();
 
-function onFullscreenChange() {
+function handleFullscreenChanged() {
   if (window.Telegram.WebApp.isFullscreen) {
     console.log("Fullscreen on");
   } else {
@@ -23,11 +23,11 @@ function onFullscreenChange() {
   }
 }
 
-window.Telegram.WebApp.onEvent("fullscreenChanged", onFullscreenChange);
+window.Telegram.WebApp.onEvent("fullscreenChanged", handleFullscreenChanged);
 
-window.Telegram.WebApp.offEvent("fullscreenChanged", onFullscreenChange);
+window.Telegram.WebApp.offEvent("fullscreenChanged", handleFullscreenChanged);
 
-function onShareMessageFailed(event) {
+function handleShareMessageFailed(event) {
   let message = event.error;
   if (message === "UNSUPPORTED" || message === "UNKNOWN_ERROR" || message === "MESSAGE_EXPIRED" || message === "USER_DECLINED" || message === "MESSAGE_SEND_FAILED") {
     switch (message) {
@@ -53,9 +53,9 @@ function onShareMessageFailed(event) {
   }
 }
 
-window.Telegram.WebApp.onEvent("shareMessageFailed", onShareMessageFailed);
+window.Telegram.WebApp.onEvent("shareMessageFailed", handleShareMessageFailed);
 
-window.Telegram.WebApp.offEvent("shareMessageFailed", onShareMessageFailed);
+window.Telegram.WebApp.offEvent("shareMessageFailed", handleShareMessageFailed);
 
 if (window.Telegram.WebApp.BackButton.isVisible) {
   console.log("The back button is on");
@@ -89,7 +89,7 @@ window.Telegram.WebApp.DeviceStorage.setItem("StoredKey", "StoredValue", (error,
   console.log("New type of error: " + error);
 });
 
-let InvalidCallbackArguments = /* @__PURE__ */Primitive_exceptions.create("TelegramWebApp__test.InvalidCallbackArguments");
+let InvalidCallbackArguments = /* @__PURE__ */Primitive_exceptions.create("WebApp__test-TelegramWebApp.InvalidCallbackArguments");
 
 function toResult(error, value) {
   if (error !== null) {
@@ -132,8 +132,8 @@ console.log(someOtherGlobalValue.version);
 
 export {
   greeting,
-  onFullscreenChange,
-  onShareMessageFailed,
+  handleFullscreenChanged,
+  handleShareMessageFailed,
   InvalidCallbackArguments,
   toResult,
 }

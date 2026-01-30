@@ -4,7 +4,8 @@
 
  Use Global to access global API
  */
-open TelegramWebApp.Global
+open Global
+open WebAppAPI
 
 /**
  Reading record fields
@@ -29,12 +30,12 @@ if telegramWebApp.isActve && telegramWebApp.isExpanded {
 /**
  Calling top level method
  */
-telegramWebApp->TelegramWebApp.requestFullscreen
+telegramWebApp->requestFullscreen
 
 /**
  Subscribing to events
  */
-let onFullscreenChange = () => {
+let handleFullscreenChanged = () => {
   if telegramWebApp.isFullscreen {
     Console.log("Fullscreen on")
   } else {
@@ -42,8 +43,8 @@ let onFullscreenChange = () => {
   }
 }
 
-telegramWebApp->TelegramWebApp.onFullscreenChanged(onFullscreenChange)
-telegramWebApp->TelegramWebApp.offFullscreenChanged(onFullscreenChange)
+telegramWebApp->onFullscreenChanged(handleFullscreenChanged)
+telegramWebApp->offFullscreenChanged(handleFullscreenChanged)
 
 /**
  Handling error events
@@ -52,7 +53,7 @@ telegramWebApp->TelegramWebApp.offFullscreenChanged(onFullscreenChange)
  the `UndocumentedError(message)` case, for compatibility
  with future additions to Bot API
  */
-let onShareMessageFailed: TelegramWebApp.Events.shareMessageFailed = event => {
+let handleShareMessageFailed: Events.shareMessageFailed = event => {
   switch event.error {
   | Unsupported => Console.log("Sharing messages is not supported by client")
   | MessageExpired => Console.log("The message is expired")
@@ -63,8 +64,8 @@ let onShareMessageFailed: TelegramWebApp.Events.shareMessageFailed = event => {
   }
 }
 
-telegramWebApp->TelegramWebApp.onShareMessageFailed(onShareMessageFailed)
-telegramWebApp->TelegramWebApp.offShareMessageFailed(onShareMessageFailed)
+telegramWebApp->onShareMessageFailed(handleShareMessageFailed)
+telegramWebApp->offShareMessageFailed(handleShareMessageFailed)
 
 /**
  Submodules
@@ -84,8 +85,8 @@ if telegramWebApp.backButton.isVisible {
  the returned value
  */
 telegramWebApp.backButton
-->TelegramWebApp.BackButton.show
-->TelegramWebApp.BackButton.hide
+->BackButton.show
+->BackButton.hide
 ->ignore
 
 /**
@@ -99,7 +100,7 @@ telegramWebApp.backButton.isVisible = true
  submodule locally
  */
 {
-  open TelegramWebApp.BottomButton
+  open BottomButton
 
   telegramWebApp.mainButton
   ->enable
@@ -125,7 +126,7 @@ telegramWebApp.backButton.isVisible = true
  It does require some redundant checks
  */
 telegramWebApp.deviceStorage
-->TelegramWebApp.DeviceStorage.setItem("StoredKey", "StoredValue", ~callback=(error, value) => {
+->DeviceStorage.setItem("StoredKey", "StoredValue", ~callback=(error, value) => {
   switch error {
   | Null =>
     switch value {
@@ -165,7 +166,7 @@ let toResult = (error: Null.t<'e>, value: option<'v>): Result.t<'v, 'e> => {
 }
 
 telegramWebApp.deviceStorage
-->TelegramWebApp.DeviceStorage.setItem("StoredKey", "StoredValue", ~callback=(error, value) => {
+->DeviceStorage.setItem("StoredKey", "StoredValue", ~callback=(error, value) => {
   switch toResult(error, value) {
   | Ok(true) => Console.log("Item successfuly stored")
   | Ok(false) => Console.log("Failed to store item")
@@ -181,6 +182,6 @@ telegramWebApp.deviceStorage
  Useful for tests, mocks, supproting non-telegram environments
  */
 @val
-external mockedTelegramWebApp: TelegramWebApp.t = "someOtherGlobalValue"
+external mockedWebApp: WebApp.t = "someOtherGlobalValue"
 
-Console.log(mockedTelegramWebApp.version)
+Console.log(mockedWebApp.version)
