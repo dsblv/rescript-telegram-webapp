@@ -5,7 +5,6 @@
  Use Global to access global API
  */
 open Global
-open WebAppAPI
 
 /**
  Reading record fields
@@ -30,7 +29,7 @@ if telegramWebApp.isActve && telegramWebApp.isExpanded {
 /**
  Calling top level method
  */
-telegramWebApp->requestFullscreen
+telegramWebApp->WebAppAPI.requestFullscreen
 
 /**
  Subscribing to events
@@ -43,8 +42,8 @@ let handleFullscreenChanged = () => {
   }
 }
 
-telegramWebApp->onFullscreenChanged(handleFullscreenChanged)
-telegramWebApp->offFullscreenChanged(handleFullscreenChanged)
+telegramWebApp->WebAppAPI.onFullscreenChanged(handleFullscreenChanged)
+telegramWebApp->WebAppAPI.offFullscreenChanged(handleFullscreenChanged)
 
 /**
  Handling error events
@@ -53,7 +52,7 @@ telegramWebApp->offFullscreenChanged(handleFullscreenChanged)
  the `UndocumentedError(message)` case, for compatibility
  with future additions to Bot API
  */
-let handleShareMessageFailed: Events.shareMessageFailed = event => {
+let handleShareMessageFailed: WebAppAPI.Events.shareMessageFailed = event => {
   switch event.error {
   | Unsupported => Console.log("Sharing messages is not supported by client")
   | MessageExpired => Console.log("The message is expired")
@@ -64,8 +63,8 @@ let handleShareMessageFailed: Events.shareMessageFailed = event => {
   }
 }
 
-telegramWebApp->onShareMessageFailed(handleShareMessageFailed)
-telegramWebApp->offShareMessageFailed(handleShareMessageFailed)
+telegramWebApp->WebAppAPI.onShareMessageFailed(handleShareMessageFailed)
+telegramWebApp->WebAppAPI.offShareMessageFailed(handleShareMessageFailed)
 
 /**
  Submodules
