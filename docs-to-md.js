@@ -33,232 +33,38 @@ let readStdin = function () {
 let toMarkdown = function (docs) {
   let lines = [];
 
-  lines.push(`# ${docs.name}`);
+  lines.push(`## ${docs.name.replace("-TelegramWebApp", "")}`);
   lines.push("");
 
-  let t;
-  let values = [];
   let modules = [];
-  let types = [];
-  let events;
-  let eventHandlers = [];
 
   for (let item of docs.items) {
     switch (item.kind) {
       case "module":
-        if (item.name === "Events") {
-          events = item;
-        } else {
-          modules.push(item);
-        }
+        modules.push(item);
         break;
-      case "type":
-        if (item.name === "t") {
-          t = item;
-        } else {
-          types.push(item);
+      default: {
+        lines.push(`### ${item.id.replace("-TelegramWebApp", "")}`);
+        lines.push("");
+
+        for (let line of item.docstrings) {
+          lines.push(line.trim());
         }
+
+        lines.push("");
+        lines.push("```rescript");
+        lines.push(item.signature.trim());
+        lines.push("```");
+        lines.push("");
         break;
-      default:
-        if (
-          (item.name.startsWith("on") &&
-            item.name[2].toUpperCase() === item.name[2]) ||
-          (item.name.startsWith("off") &&
-            item.name[3].toUpperCase() === item.name[3])
-        ) {
-          eventHandlers.push(item);
-        } else {
-          values.push(item);
-        }
-        break;
+      }
     }
   }
 
-  if (t) {
-    lines.push(`## ${t.id}`);
-    lines.push("");
-    lines.push("```rescript");
-    lines.push(t.signature.trim());
-    lines.push("```");
-    lines.push("");
+  for (let item of modules) {
+    lines.push(toMarkdown(item));
   }
 
-  lines.push("");
-  lines.push("## Methods");
-  lines.push("");
-
-  for (let value of values) {
-    lines.push(`### ${value.id}`);
-    lines.push("");
-
-    for (let line of value.docstrings) {
-      lines.push(line.trim());
-    }
-
-    // if (value.name !== "onEvent" && value.name !== "offEvent") {
-    lines.push("");
-    lines.push("```rescript");
-    lines.push(value.signature.trim());
-    lines.push("```");
-    // }
-
-    lines.push("");
-  }
-
-  lines.push("");
-  lines.push("## Types");
-  lines.push("");
-
-  for (let type of types) {
-    lines.push(`### ${type.id}`);
-    lines.push("");
-    lines.push("```rescript");
-    lines.push(type.signature.trim());
-    lines.push("```");
-    lines.push("");
-  }
-
-  lines.push("");
-  lines.push("## Modules");
-  lines.push("");
-
-  for (let module of modules) {
-    lines.push(`### ${module.id}`);
-    lines.push("");
-
-    for (let line of module.docstrings) {
-      lines.push(line.trim());
-    }
-
-    let t;
-    let values = [];
-    // let modules = [];
-    let types = [];
-
-    for (let item of module.items) {
-      switch (item.kind) {
-        case "module":
-          // modules.push(item);
-          break;
-        case "type":
-          if (item.name === "t") {
-            t = item;
-          } else {
-            types.push(item);
-          }
-          break;
-        default:
-          values.push(item);
-          break;
-      }
-    }
-
-    if (t) {
-      lines.push(`#### ${t.id}`);
-      lines.push("");
-      lines.push("```rescript");
-      lines.push(t.signature.trim());
-      lines.push("```");
-      lines.push("");
-    }
-
-    for (let value of values) {
-      lines.push(`#### ${value.id}`);
-      lines.push("");
-
-      for (let line of value.docstrings) {
-        lines.push(line.trim());
-      }
-
-      lines.push("");
-      lines.push("```rescript");
-      lines.push(value.signature.trim());
-      lines.push("```");
-      lines.push("");
-    }
-
-    for (let type of types) {
-      lines.push(`#### ${type.id}`);
-      lines.push("");
-
-      for (let line of type.docstrings) {
-        lines.push(line.trim());
-      }
-
-      lines.push("");
-
-      lines.push("```rescript");
-      lines.push(type.signature.trim());
-      lines.push("```");
-      lines.push("");
-    }
-
-    lines.push("");
-  }
-
-  {
-    // custom event definitions
-    let module = events;
-    lines.push(`## Events`);
-    lines.push("");
-
-    for (let line of module.docstrings) {
-      lines.push(line.trim());
-    }
-
-    // let values = [];
-
-    let types = [];
-
-    for (let item of module.items) {
-      switch (item.kind) {
-        case "module":
-          // modules.push(item);
-          break;
-        case "type":
-          if (item.name === "t") {
-            t = item;
-          } else {
-            types.push(item);
-          }
-          break;
-        default:
-          // values.push(item);
-          break;
-      }
-    }
-
-    for (let value of eventHandlers) {
-      lines.push(`### ${value.id}`);
-      lines.push("");
-
-      for (let line of value.docstrings) {
-        lines.push(line.trim());
-      }
-
-      lines.push("");
-      lines.push("```rescript");
-      lines.push(value.signature.trim());
-      lines.push("```");
-      lines.push("");
-    }
-
-    for (let type of types) {
-      lines.push(`### ${type.id}`);
-      lines.push("");
-
-      for (let line of type.docstrings) {
-        lines.push(line.trim());
-      }
-
-      lines.push("");
-
-      lines.push("```rescript");
-      lines.push(type.signature.trim());
-      lines.push("```");
-      lines.push("");
-    }
-  }
   return lines.join("\n");
 };
 

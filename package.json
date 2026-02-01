@@ -5,7 +5,7 @@
     "res:build": "rescript",
     "res:clean": "rescript clean",
     "res:dev": "rescript watch",
-    "docs:generate": "rescript-tools doc src/TelegramWebApp.res | node docs-to-md.js | prettier --stdin-filepath API_REFERENCE.md > API_REFERENCE.md"
+    "docs:generate": "sh ./make-api-reference.sh"
   },
   "keywords": [
     "rescript",
