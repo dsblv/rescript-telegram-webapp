@@ -14,11 +14,11 @@
     "miniapp",
     "bindings"
   ],
-  "author": "Dmitrii Sobolev <hypercrab@vk.com>",
+  "author": "Dima Sobolev <disobolev@icloud.com>",
   "license": "MIT",
   "files": [
     "rescript.json",
-    "src/TelegramWebApp.res"
+    "src/**/*.res"
   ],
   "devDependencies": {
     "prettier": "3.8.1",
