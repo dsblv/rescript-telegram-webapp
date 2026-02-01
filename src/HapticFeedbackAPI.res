@@ -11,7 +11,7 @@ type impactStyle =
  A method tells that an impact occurred. The Telegram app may play the appropriate haptics based on style value passed.
  */
 @send
-external impactOccured: (t, impactStyle) => unit = "impactOccured"
+external impactOccurred: (t, impactStyle) => unit = "impactOccurred"
 
 type notificationType =
   | @as("error") Error // indicates that a task or action has failed,
